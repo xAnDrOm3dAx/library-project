@@ -1,4 +1,4 @@
-const myLibrary = ["Book 1", "Book 2", "Book 3"];
+const myLibrary = [];
 
 function Book(title, author, pages, read) {
   this.title = title;
@@ -7,23 +7,76 @@ function Book(title, author, pages, read) {
   this.hasRead = read;
 }
 
+Book.prototype.toggleRead = function () {
+  this.read = !this.read;
+};
+
+function toggleRead(index) {
+  myLibrary[index].toggleRead();
+  renderBookToHtml();
+}
+
+function renderBookToHtml() {
+  const libraryElement = document.querySelector("#library");
+  libraryElement.innerHTML = "";
+  for (let i = 0; i < myLibrary.length; i++) {
+    let libraryBooks = myLibrary[i];
+    const bookCardElement = document.createElement("div");
+    bookCardElement.classList.add("book-card");
+    bookCardElement.innerHTML = `
+    <div class="card-header">
+      <h3 class="title">${libraryBooks.title}</h3>
+      <h5 class="author">${libraryBooks.author}</h5>
+    </div>
+    <div class="card-body">
+      <p class="pages">${libraryBooks.pages}</p>
+      <p class="read-status">${libraryBooks.read ? "Read" : "Not Read Yet"}</p>
+      <button id="remove-book-btn" onclick="removeBook(${i})">Remove</button>
+      <button id="toggle-read-btn" onclick="toggleRead(${i})">Toggle</button>
+    </div>`;
+    libraryElement.appendChild(bookCardElement);
+  }
+}
+
 function addBookToLibrary() {
   let title = document.querySelector("#title").value;
   let author = document.querySelector("#author").value;
   let pages = document.querySelector("#pages").value;
-  let read = document.querySelector("#read").value;
+  let read = document.querySelector("#read").checked;
   let newBook = new Book(title, author, pages, read);
-  console.log(newBook);
+  myLibrary.push(newBook);
+  console.log(myLibrary);
+  renderBookToHtml();
 }
 
 const newBookBtn = document.querySelector("#new-book-btn");
-const newBookForm = document.querySelector("#new-book-form");
-
 newBookBtn.addEventListener("click", () => {
   newBookForm.style.display = "flex";
 });
 
+const newBookForm = document.querySelector("#new-book-form");
 newBookForm.addEventListener("submit", (event) => {
   event.preventDefault();
   addBookToLibrary();
+  newBookForm.style.display = "none";
 });
+
+function removeBook(index) {
+  myLibrary.splice(index, 1);
+  renderBookToHtml();
+}
+
+// const removeBookBtn = document.querySelector("#remove-book-btn");
+// removeBookBtn.addEventListener("click", () => {
+//  console.log("test");
+// });
+
+// function removeBook() {
+//   myLibrary.splice(index, 1);
+//   renderBookToHtml()
+// }
+
+// const dialog = document.querySelector("#form-popup");
+// newBookBtn.addEventListener("click", () => {
+//   dialog.showModal();
+// });
