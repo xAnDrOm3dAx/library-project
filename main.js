@@ -5,14 +5,35 @@ function Book(title, author, pages, read) {
   this.author = author;
   this.pages = pages;
   this.hasRead = read;
+  //   Book.prototype.toggleRead = function () {
+  //   this.read = !this.read;
+  // };
 }
 
 Book.prototype.toggleRead = function () {
   this.read = !this.read;
 };
 
-function toggleRead(index) {
-  myLibrary[index].toggleRead();
+const newBookBtn = document.querySelector("#new-book-btn");
+newBookBtn.addEventListener("click", () => {
+  newBookForm.style.display = "flex";
+});
+
+const newBookForm = document.querySelector("#new-book-form");
+newBookForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  addBookToLibrary();
+  newBookForm.style.display = "none";
+});
+
+function addBookToLibrary() {
+  let title = document.querySelector("#title").value;
+  let author = document.querySelector("#author").value;
+  let pages = document.querySelector("#pages").value;
+  let read = document.querySelector("#read").checked;
+  let newBook = new Book(title, author, pages, read);
+  myLibrary.push(newBook);
+  console.log(myLibrary);
   renderBookToHtml();
 }
 
@@ -38,45 +59,12 @@ function renderBookToHtml() {
   }
 }
 
-function addBookToLibrary() {
-  let title = document.querySelector("#title").value;
-  let author = document.querySelector("#author").value;
-  let pages = document.querySelector("#pages").value;
-  let read = document.querySelector("#read").checked;
-  let newBook = new Book(title, author, pages, read);
-  myLibrary.push(newBook);
-  console.log(myLibrary);
+function toggleRead(index) {
+  myLibrary[index].toggleRead();
   renderBookToHtml();
 }
-
-const newBookBtn = document.querySelector("#new-book-btn");
-newBookBtn.addEventListener("click", () => {
-  newBookForm.style.display = "flex";
-});
-
-const newBookForm = document.querySelector("#new-book-form");
-newBookForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-  addBookToLibrary();
-  newBookForm.style.display = "none";
-});
 
 function removeBook(index) {
   myLibrary.splice(index, 1);
   renderBookToHtml();
 }
-
-// const removeBookBtn = document.querySelector("#remove-book-btn");
-// removeBookBtn.addEventListener("click", () => {
-//  console.log("test");
-// });
-
-// function removeBook() {
-//   myLibrary.splice(index, 1);
-//   renderBookToHtml()
-// }
-
-// const dialog = document.querySelector("#form-popup");
-// newBookBtn.addEventListener("click", () => {
-//   dialog.showModal();
-// });
