@@ -15,16 +15,32 @@ Book.prototype.toggleRead = function () {
 };
 
 const newBookBtn = document.querySelector("#new-book-btn");
+const newBookForm = document.querySelector("#new-book-form");
+const library = document.querySelector("#library");
+
 newBookBtn.addEventListener("click", () => {
   newBookForm.style.display = "flex";
+  library.style.display = "none";
 });
 
-const newBookForm = document.querySelector("#new-book-form");
 newBookForm.addEventListener("submit", (event) => {
   event.preventDefault();
   addBookToLibrary();
   newBookForm.style.display = "none";
+  library.style.display = "flex";
 });
+
+// const newBookBtn = document.querySelector("#new-book-btn");
+// newBookBtn.addEventListener("click", () => {
+//   const newBookForm = document.querySelector("#new-book-form");
+//   newBookForm.style.display = "flex";
+// });
+
+// document.querySelector("#new-book-form").addEventListener("submit", (event) => {
+//   event.preventDefault();
+//   addBookToLibrary();
+//   newBookForm.style.display = "none";
+// });
 
 function addBookToLibrary() {
   let title = document.querySelector("#title").value;
